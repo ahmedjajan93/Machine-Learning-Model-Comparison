@@ -12,6 +12,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, ConfusionMatrixDisplay
 from sklearn.ensemble import VotingClassifier, StackingClassifier
+from sklearn.decomposition import PCA
 import shap
 
 # Set page config
@@ -123,9 +124,13 @@ st.pyplot(fig)
 
 # Pair Plot for Iris dataset
 if dataset == "Iris":
-    st.subheader("Pair Plot")
-    fig = sns.pairplot(df, hue='target', diag_kind='kde')
-    plt.suptitle("Iris Dataset Pair Plot", y=1.02)
+    st.subheader("PCA Plot")
+    # PCA
+    fig, ax = plt.subplots(figsize=(10, 6))
+    pca = PCA(n_components=2)
+    iris_pca = pca.fit_transform(df_iris.drop('target', axis=1))
+    plt.scatter(iris_pca[:, 0], iris_pca[:, 1], c=df_iris['target'])
+    plt.title("Iris PCA")
     st.pyplot(fig)
 
 # Model Comparison Section
